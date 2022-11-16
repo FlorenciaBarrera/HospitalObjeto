@@ -113,7 +113,7 @@ public void eliminarUbicacion(Modelo.Ubicacion ubicacion,JTable tabla){
                 pst.execute();
                 
                 llenarTablaUbicacion(tabla);
-                JOptionPane.showMessageDialog(null, "ex");
+                JOptionPane.showMessageDialog(null, "Exito al borrar");
             }catch(SQLException e){
             System.out.println(e);
             }            
@@ -227,7 +227,7 @@ public void insertarHabitacion(Habitacion habitacion,Ubicacion ubicacion, JTable
 public void eliminarHabitacion(Habitacion habitacion,JTable tabla){  
             try {    
                 
-                String consulta = "DELETE FROM public.\"Habitacion\"\n" +
+                String consulta = "DELETE FROM \"Habitacion\"\n" +
 " WHERE \"idHabitacion\" = ?;";
                 pst = conexion.prepareStatement(consulta);
                 pst.setInt(1, habitacion.getIdHabitacion());                   
