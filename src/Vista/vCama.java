@@ -25,19 +25,19 @@ ArrayList<Habitacion> habitaciones;
 ArrayList<Cama> camas;
     
     public vCama() throws SQLException {
-        initComponents();
+         initComponents();
         controlador = new Controlador();
         ubicaciones = new ArrayList<Ubicacion>();
         habitaciones = new ArrayList<Habitacion>();
         camas = new ArrayList<Cama>();
-        
+//        
         controlador.llenarTablaCama(tablaCama);
-        
+//        
         habitaciones = controlador.llenarComboHabitacion();
         ubicaciones = controlador.llenarComboUbicacion();
         for (int i = 0; i < habitaciones.size(); i++) {
+            System.out.println("add; " + habitaciones.get(i).getNumero()+" " + ubicaciones.get(i).getHospital()+" "+ubicaciones.get(i).getNombreSala());
             cbHabitacion.addItem(habitaciones.get(i).getNumero()+" " + ubicaciones.get(i).getHospital()+" "+ubicaciones.get(i).getNombreSala());
-            
         }
         
     }
@@ -63,6 +63,7 @@ ArrayList<Cama> camas;
         jButton1 = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnAgregar1 = new javax.swing.JButton();
 
         tablaCama.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -84,6 +85,12 @@ ArrayList<Cama> camas;
         jLabel2.setText("Estado:");
 
         jLabel3.setText("Habitación:");
+
+        txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumeroKeyTyped(evt);
+            }
+        });
 
         cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione Estado Cama...", "Disponible", "No Disponible" }));
 
@@ -107,6 +114,13 @@ ArrayList<Cama> camas;
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnAgregar1.setText("Liberar");
+        btnAgregar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar1ActionPerformed(evt);
             }
         });
 
@@ -140,7 +154,9 @@ ArrayList<Cama> camas;
                                             .addComponent(btnEliminar)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(184, 184, 184)
-                                .addComponent(btnAgregar)))
+                                .addComponent(btnAgregar)
+                                .addGap(41, 41, 41)
+                                .addComponent(btnAgregar1)))
                         .addGap(0, 164, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -162,7 +178,9 @@ ArrayList<Cama> camas;
                     .addComponent(jLabel3)
                     .addComponent(cbHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(btnAgregar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnAgregar1))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
@@ -233,11 +251,49 @@ ArrayList<Cama> camas;
     private void tablaCamaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCamaMouseClicked
         int row = tablaCama.getSelectedRow();
         String numero = tablaCama.getValueAt(row, 4).toString();
+        if(tablaCama.getValueAt(row, 5)=="Disponible"){
+        this.btnAgregar1.setVisible(false);
+        //JOptionPane.showMessageDialog(null, "el boton esta dispo");
+        }else{
+        this.btnAgregar1.setVisible(true);
+        //JOptionPane.showMessageDialog(null, "el boton no esta dispo");
+        }
+        //JOptionPane.showMessageDialog(null, tablaCama.getValueAt(row, 5));
         //String ubicacion = tablaHabitacion.getValueAt(row, 2).toString();
         
         txtNumero.setText(numero);
         //txtNombre.setText(nombre);
     }//GEN-LAST:event_tablaCamaMouseClicked
+
+    private void txtNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyTyped
+         //Integer.parseInt(txtNumero.getText());
+        System.out.println("tecla presionada:  "+evt.getKeyChar());
+        char a = evt.getKeyChar();
+        boolean valido = false;
+          if(txtNumero.getText().length() ==0 )
+    {
+        if (a == '-' ||  a == '0' ) {
+            JOptionPane.showMessageDialog(null, "Tiene que ingresar numeros positivos mayores a cero (0).");
+
+        } else if (a > '0' && a <= '9') {
+            valido = true;
+        }
+        if (!valido) {
+            evt.consume();
+        }        // TODO add your handling code here:
+    }
+    }//GEN-LAST:event_txtNumeroKeyTyped
+
+    private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
+        Cama cama = new Cama();
+        int row = tablaCama.getSelectedRow();
+        //JOptionPane.showMessageDialog(null, tablaCama.getValueAt(row, 5));
+        
+        String id = tablaCama.getValueAt(row, 3).toString();
+        cama.setIdCama(Integer.parseInt(id));
+        
+        controlador.liberarCama(cama, tablaCama);
+    }//GEN-LAST:event_btnAgregar1ActionPerformed
         
 public void limpiarCampos(){
     
@@ -246,6 +302,7 @@ public void limpiarCampos(){
 }    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnEliminar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbEstado;

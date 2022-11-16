@@ -137,6 +137,27 @@ public ArrayList<Cama> llenarComboCama(){
 }
 public void eliminarInternacion(Internacion internacion,JTable tabla){  
             try {    
+                int idCama=0;
+                String consulta2 = "SELECT \"Internacion\".\"idCama\"\n" +
+                "  FROM \"Internacion\"\n" +
+                "  WHERE  \"Internacion\".\"idInternacion\" = ? ;";
+                   pst = conexion.prepareStatement(consulta2);
+                   pst.setInt(1, internacion.getIdInternacion());
+                   rs = pst.executeQuery();
+                   rsm = rs.getMetaData();
+                   while (rs.next()) { 
+                     idCama=rs.getInt(1); 
+                   }
+                   
+                String consulta1 = "UPDATE \"Cama\"\n" +
+"   SET \"estado\" = 'Disponible'\n" +
+" WHERE \"idCama\"= ?;";
+                pst = conexion.prepareStatement(consulta1);
+                pst.setInt(1, idCama);                   
+                pst.execute();
+                //JOptionPane.showMessageDialog(null, "Cama liberada:"+idCama);
+                
+                
                 
                 String consulta = "DELETE FROM \"Internacion\"\n" +
 " WHERE \"Internacion\".\"idInternacion\" = ?;";
@@ -144,8 +165,11 @@ public void eliminarInternacion(Internacion internacion,JTable tabla){
                 pst.setInt(1, internacion.getIdInternacion());                   
                 pst.execute();
                 
-                llenarTablaInternacion(tabla);
+                
                 JOptionPane.showMessageDialog(null, "Exito al borrar");
+                
+                
+                llenarTablaInternacion(tabla);
             }catch(SQLException e){
             System.out.println(e);
             }            

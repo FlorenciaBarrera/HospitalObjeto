@@ -187,23 +187,34 @@ public void insertarHabitacion(Habitacion habitacion,Ubicacion ubicacion, JTable
         
         
         try {
-       
+            
+            int cantidad_de_regsitros = 0;
+             String consulta = "SELECT \"Habitacion\".\"numero\"\n" +
+                "  FROM \"Habitacion\"\n" +
+                "  WHERE  \"Habitacion\".\"numero\" = ?\n"+
+                "  AND  \"Habitacion\".\"idUbicacion\" = ? ;";
+                   pst = conexion.prepareStatement(consulta);
+                   pst.setInt(1, habitacion.getNumero());
+                   pst.setObject(2, ubicacion.getIdUbicacion());
+                   rs = pst.executeQuery();
+                   rsm = rs.getMetaData();
+                   while (rs.next()) { 
+                     cantidad_de_regsitros++;
+                   }
+       if(cantidad_de_regsitros>0){
+            JOptionPane.showMessageDialog(null, "No puede repetirse la habitacion en una misma ubicacion");
+       }else{
         String cadena = "INSERT INTO public.\"Habitacion\"(\n" +
-"            numero, \"idUbicacion\")\n" +
-"    VALUES (?, ?);"; 
+                        "            numero, \"idUbicacion\")\n" +
+                        "    VALUES (?, ?);"; 
         
-         pst = conexion.prepareStatement(cadena);
-        
+        pst = conexion.prepareStatement(cadena);
         pst.setInt(1, habitacion.getNumero());
         pst.setObject(2, ubicacion.getIdUbicacion());
-        
-
-        pst.execute();
-            
-            JOptionPane.showMessageDialog(null, "Se inserto correctamente");
-            
-            llenarTablaHabitacion(tabla);
-        
+        pst.execute(); 
+        JOptionPane.showMessageDialog(null, "Se inserto correctamente");
+        llenarTablaHabitacion(tabla);
+        }
         
         } catch (SQLException | HeadlessException e) {
             
@@ -274,10 +285,16 @@ public void llenarTablaCama (JTable tabla) throws SQLException{
        
         tabla.setModel(modelo2);
         
-        String consulta = "SELECT \"Ubicacion\".\"hospital\",\"Ubicacion\".\"nombreSala\", \"Habitacion\".\"numero\",\"Cama\".\"idCama\", \"Cama\".\"numero\",\"Cama\".\"estado\"\n" +
-"FROM \"Ubicacion\", \"Habitacion\", \"Cama\"\n" +
-"WHERE \"Ubicacion\".\"idUbicacion\" = \"Habitacion\".\"idUbicacion\"\n" +
-"AND \"Habitacion\".\"idHabitacion\" = \"Cama\".\"idHabitacion\";";
+//        String consulta = "SELECT \"Ubicacion\".\"hospital\",\"Ubicacion\".\"nombreSala\", \"Habitacion\".\"numero\",\"Cama\".\"idCama\", \"Cama\".\"numero\",\"Cama\".\"estado\"\n" +
+//"FROM \"Ubicacion\", \"Habitacion\", \"Cama\"\n" +
+//"WHERE \"Ubicacion\".\"idUbicacion\" = \"Habitacion\".\"idUbicacion\"\n" +
+//"AND \"Habitacion\".\"idHabitacion\" = \"Cama\".\"idHabitacion\";";
+        
+        
+ String consulta = "SELECT \"Ubicacion\".\"hospital\",\"Ubicacion\".\"nombreSala\", \"Habitacion\".\"numero\",\"Cama\".\"idCama\", \"Cama\".\"numero\",\"Cama\".\"estado\"\n" +
+"FROM \"Cama\"\n" +
+"LEFT JOIN  \"Habitacion\" ON  \"Habitacion\".\"idHabitacion\" = \"Cama\".\"idHabitacion\"\n" +
+"LEFT JOIN \"Ubicacion\" ON   \"Ubicacion\".\"idUbicacion\" = \"Habitacion\".\"idUbicacion\";" ;
         pst = conexion.prepareStatement(consulta);
         
         
@@ -292,8 +309,6 @@ public void llenarTablaCama (JTable tabla) throws SQLException{
             fila[3] = rs.getInt(4);
             fila[4] = rs.getInt(5);
             fila[5] = rs.getString(6); 
-
-                        
             modelo2.addRow(fila);
         }
     }    
@@ -338,24 +353,38 @@ public void insertarCama(Cama cama, Habitacion habitacion,JTable tabla){
         
         
         try {
-       
-        String cadena = "INSERT INTO \"Cama\"(\n" +
+            int cantidad_de_regsitros = 0;
+             String consulta = "SELECT \"Cama\".\"numero\"\n" +
+                "  FROM \"Cama\"\n" +
+                "  WHERE  \"Cama\".\"numero\" = ?\n"+
+                "  AND  \"Cama\".\"idHabitacion\" = ? ;";
+                   pst = conexion.prepareStatement(consulta);
+                   pst.setInt(1, cama.getNumero());
+                   pst.setObject(2, habitacion.getIdHabitacion());
+                   rs = pst.executeQuery();
+                   rsm = rs.getMetaData();
+                   while (rs.next()) { 
+                     cantidad_de_regsitros++;
+                   }
+       if(cantidad_de_regsitros>0){
+            JOptionPane.showMessageDialog(null, "No puede repetirse el numero de cama en una misma habitacion");
+       }else{
+           String cadena = "INSERT INTO \"Cama\"(\n" +
 "            numero, estado, \"idHabitacion\")\n" +
 "    VALUES (?, ?, ?);"; 
-        
-         pst = conexion.prepareStatement(cadena);
-         
-         
+        pst = conexion.prepareStatement(cadena);
         pst.setInt(1, cama.getNumero());
         pst.setString(2, cama.getEstado());
         pst.setObject(3, habitacion.getIdHabitacion());
+        pst.execute(); 
+        JOptionPane.showMessageDialog(null, "Se inserto correctamente");
+        llenarTablaCama(tabla);
+       }
+       
+       
+       
+       
         
-
-        pst.execute();
-            
-            JOptionPane.showMessageDialog(null, "Se inserto correctamente");
-            
-            llenarTablaCama(tabla);
         
         
         } catch (SQLException | HeadlessException e) {
@@ -374,11 +403,28 @@ public void eliminarCama(Cama cama,JTable tabla){
                 pst = conexion.prepareStatement(consulta);
                 pst.setInt(1, cama.getIdCama());                   
                 pst.execute();
-                
-                llenarTablaCama(tabla);
                 JOptionPane.showMessageDialog(null, "Exito al borrar");
+                llenarTablaCama(tabla);
+                
             }catch(SQLException e){
             System.out.println(e);
+            }            
+   }
+
+public void liberarCama(Cama cama,JTable tabla){  
+            try {    
+                
+                String consulta = "UPDATE public.\"Cama\"\n" +
+"   SET \"estado\" = 'Disponible'\n" +
+" WHERE \"idCama\"= ?;";
+                pst = conexion.prepareStatement(consulta);
+                pst.setInt(1, cama.getIdCama());                   
+                pst.execute();
+                
+                llenarTablaCama(tabla);
+                JOptionPane.showMessageDialog(null, "Cama liberada");
+            }catch(SQLException e){
+                System.out.println(e);
             }            
    }
 

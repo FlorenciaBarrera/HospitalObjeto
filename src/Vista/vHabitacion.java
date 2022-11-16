@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,22 +23,29 @@ public class vHabitacion extends javax.swing.JInternalFrame {
 Controlador controlador;
 ArrayList<Habitacion> habitaciones;
 ArrayList<Ubicacion> ubicaciones;
-
+boolean abrirFormuario=true;
     
     
     public vHabitacion() throws SQLException {
         initComponents();
-        
         controlador = new Controlador();
         habitaciones = new ArrayList<Habitacion>();
         ubicaciones = new ArrayList<Ubicacion>();
+        ubicaciones = new ArrayList<Ubicacion>();
+        ubicaciones = controlador.llenarComboUbicacion();
+//        if(ubicaciones.size()==0){
+//             JOptionPane.showMessageDialog(null, "Debe existir al menos una ubicacion para asignar una habitacion.");
+//             this.dispose();
+//        }else{
+            
+        
+        
         
         controlador.llenarTablaHabitacion(tablaHabitacion);
-        
-        ubicaciones = controlador.llenarComboUbicacion();
         for (int i = 0; i < ubicaciones.size(); i++) {
             cbUbicacion.addItem(ubicaciones.get(i).getHospital()+" "+ubicaciones.get(i).getNombreSala());
             
+//        }
         }
     }
 
@@ -76,6 +84,15 @@ ArrayList<Ubicacion> ubicaciones;
         jScrollPane1.setViewportView(tablaHabitacion);
 
         jLabel1.setText("Numero:");
+
+        txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNumeroKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumeroKeyTyped(evt);
+            }
+        });
 
         jLabel2.setText("Ubicación:");
 
@@ -167,7 +184,7 @@ ArrayList<Ubicacion> ubicaciones;
         
         habitacion.setUbicacion(ubicacion);
         
-        System.out.println("PUTOOoOOOOooooOO:  "+ubicacion.getIdUbicacion()+ " "+ubicacion.getHospital()+" "+ubicacion.getNombreSala());
+        System.out.println("error:  "+ubicacion.getIdUbicacion()+ " "+ubicacion.getHospital()+" "+ubicacion.getNombreSala());
     
         controlador.insertarHabitacion(habitacion, ubicacion,tablaHabitacion);
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -197,6 +214,31 @@ ArrayList<Ubicacion> ubicaciones;
         txtNumero.setText(numero);
         //txtNombre.setText(nombre);
     }//GEN-LAST:event_tablaHabitacionMouseClicked
+
+    private void txtNumeroKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyPressed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_txtNumeroKeyPressed
+
+    private void txtNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroKeyTyped
+ //Integer.parseInt(txtNumero.getText());
+        System.out.println("tecla presionada:  "+evt.getKeyChar());
+        char a = evt.getKeyChar();
+        boolean valido = false;
+          if(txtNumero.getText().length() ==0 )
+    {
+        if (a == '-' ||  a == '0' ) {
+            JOptionPane.showMessageDialog(null, "Tiene que ingresar numeros positivos mayores a cero (0).");
+
+        } else if (a > '0' && a <= '9') {
+            valido = true;
+        }
+        if (!valido) {
+            evt.consume();
+        }        // TODO add your handling code here:
+    }
+        
+    }//GEN-LAST:event_txtNumeroKeyTyped
 
 public void limpiarCampos(){
 

@@ -233,6 +233,12 @@ Internacion in;
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         
+        
+        if(txtPaciente.getText().length() <=3 && txtDiagnostico.getText().length() <=3)
+    {
+        JOptionPane.showMessageDialog(null, "El campo Paciente y Diagnostico tienen que ser mayor a 3 caracteres");
+    }else{
+        
         Internacion internacion = new Internacion();
         Cama cama = new Cama();
         Habitacion habitacion = new Habitacion();
@@ -244,35 +250,7 @@ Internacion in;
         
         int idCama = camas.get(cbCama.getSelectedIndex()-1).getIdCama();
         cama.setIdCama(idCama);
-//        int idUbicacion = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getIdUbicacion();
-//        String hospital = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getHospital();
-//        String nombreSala = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getNombreSala();
-
-//        int idHabitacion = habitaciones.get(cbHabitacion.getSelectedIndex()-1).getIdHabitacion();
-//        int numero = habitaciones.get(cbHabitacion.getSelectedIndex()-1).getNumero();
-
-        
-//        ubicacion.setIdUbicacion(idUbicacion);
-//        ubicacion.setHospital(hospital);
-//        ubicacion.setNombreSala(nombreSala);
-//      
-//        habitacion.setIdHabitacion(idHabitacion);
-//        habitacion.setNumero(numero);
-//        habitacion.setUbicacion(ubicacion);
-//        int idCama = camas.get(cbCama.getSelectedIndex()-1).getIdCama();
-//        int numeroCama = camas.get(cbCama.getSelectedIndex()-1).getNumero();
-//        String estado = camas.get(cbCama.getSelectedIndex()-1).getEstado();
-//        cama.setHabitacion(habitacion);
-        
-        //internacion.setCama(cama);
-        //internacion.setCama(cama.getIdCama());
-        
-//        if (cbEstado.getSelectedIndex()!=0){
-//            cama.setEstado(cbEstado.getSelectedItem().toString());
-//            controlador.insertarCama(cama, habitacion, tablaCama);}
-//            else {
-//            JOptionPane.showMessageDialog(null, "Seleccione Estado Cama");
-//        }  
+ 
         SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
     String fechaActual = fecha.format(fechaInternacion.getDate());
         internacion.setFecha(fechaActual);
@@ -284,6 +262,7 @@ Internacion in;
                 //System.out.println("Si hay texto");
                  //System.out.println("Falla; " + internacion.getPaciente()+" - "+ cama.getIdCama()+" - "+ internacion.getFecha()+" - " + internacion.getDiagnostico());
                    controladorInternacion.insertarInternacion(internacion, cama, tablaInternacion);
+                   cbCama.removeAllItems();
  habitaciones = controlador.llenarComboHabitacion();
         ubicaciones = controlador.llenarComboUbicacion();
         
@@ -307,6 +286,7 @@ Internacion in;
         
     }
            }
+        }
        
         
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -315,9 +295,33 @@ Internacion in;
         Internacion internacion = new Internacion();
         int row = tablaInternacion.getSelectedRow();
         String id = tablaInternacion.getValueAt(row, 5).toString();
+        
         internacion.setIdInternacion(Integer.parseInt(id));
         
         controladorInternacion.eliminarInternacion(internacion, tablaInternacion);
+        cbCama.removeAllItems();
+ habitaciones = controlador.llenarComboHabitacion();
+        ubicaciones = controlador.llenarComboUbicacion();
+        
+        camas = controladorInternacion.llenarComboCama();
+        
+        
+        for (int i = 0; i<ubicaciones.size();i++){
+            u.setHospital(ubicaciones.get(i).getHospital());
+            u.setNombreSala(ubicaciones.get(i).getNombreSala());
+            }
+        
+         for (int i = 0; i<habitaciones.size();i++){
+            h.setNumero(habitaciones.get(i).getNumero());
+            
+            }
+        
+        for (int i = 0; i < camas.size(); i++) {
+            
+                    cbCama.addItem( camas.get(i).getNumero()+" - "+camas.get(i).getEstado() +" - " + ubicaciones.get(i).getHospital()+" - "+ ubicaciones.get(i).getNombreSala()+ " - "+habitaciones.get(i).getNumero());
+        
+        
+    }
         
         limpiarCampos();
     }//GEN-LAST:event_btnEliminarActionPerformed

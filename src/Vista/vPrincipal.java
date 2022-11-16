@@ -5,10 +5,15 @@
  */
 package Vista;
 
+import Controlador.Controlador;
 import Modelo.Cama;
+import Modelo.Habitacion;
+import Modelo.Ubicacion;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,6 +21,12 @@ import java.util.logging.Logger;
  */
 public class vPrincipal extends javax.swing.JFrame {
 
+    
+    Controlador controlador;
+ArrayList<Habitacion> habitaciones;
+ArrayList<Ubicacion> ubicaciones;
+ArrayList<Cama> camas;
+boolean abrirFormuario=true;
     /**
      * Creates new form vPrincipal
      */
@@ -134,10 +145,19 @@ public class vPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+
+
         try {
-            vHabitacion altaHabitacion = new vHabitacion();
-            altaHabitacion.setVisible(true);
-            mdi.add(altaHabitacion);
+            controlador = new Controlador();
+             ubicaciones = new ArrayList<Ubicacion>();
+            ubicaciones = controlador.llenarComboUbicacion();
+            if(ubicaciones.size()==0){
+                 JOptionPane.showMessageDialog(null, "Debe existir al menos una ubicacion para asignar una habitacion.");
+            }else{
+                vHabitacion altaHabitacion = new vHabitacion();
+                altaHabitacion.setVisible(true);
+                mdi.add(altaHabitacion);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(vPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -145,9 +165,18 @@ public class vPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         try {
+            controlador = new Controlador();
+             camas = new ArrayList<Cama>();
+        
+        habitaciones = controlador.llenarComboHabitacion();
+        ubicaciones = controlador.llenarComboUbicacion();
+            if(habitaciones.size()==0){
+                 JOptionPane.showMessageDialog(null, "Debe existir al menos una Habitacion para asignar una cama.");
+            }else{
             vCama altaCama = new vCama();
             altaCama.setVisible(true);
             mdi.add(altaCama);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(vPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }

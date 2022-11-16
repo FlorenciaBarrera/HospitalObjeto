@@ -9,7 +9,7 @@ import Controlador.Controlador;
 import Modelo.Ubicacion;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import javax.swing.JOptionPane;
 /**
  *
  * @author FlorBarrera
@@ -154,6 +154,10 @@ public class vUbicacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+if(txtHospital.getText().length() <=3 && txtNombre.getText().length() <=3)
+    {
+        JOptionPane.showMessageDialog(null, "El campo Hospital y Nombre de sala tienen que ser mayor a 3 caracteres");
+    }else{
         Ubicacion ubicacion = new Ubicacion();
         
         ubicacion.setHospital(txtHospital.getText());
@@ -162,7 +166,7 @@ public class vUbicacion extends javax.swing.JInternalFrame {
         
                 
         controlador.insertarUbicacion(ubicacion,tablaUbicacion);
-   
+    }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void tablaUbicacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaUbicacionMouseClicked
