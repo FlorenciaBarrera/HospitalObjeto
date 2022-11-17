@@ -184,10 +184,13 @@ boolean abrirFormuario=true;
       
         
         habitacion.setUbicacion(ubicacion);
-        
+        if(Integer.parseInt(txtNumero.getText())<=0){
+        JOptionPane.showMessageDialog(null, "El numero de habitacion no puede ser igual o menos a cero");
+        }else{
         System.out.println("error:  "+ubicacion.getIdUbicacion()+ " "+ubicacion.getHospital()+" "+ubicacion.getNombreSala());
     
         controlador.insertarHabitacion(habitacion, ubicacion,tablaHabitacion);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -203,7 +206,7 @@ boolean abrirFormuario=true;
         controlador.eliminarHabitacion(habitacion, tablaHabitacion);
         
         limpiarCampos();
-        btnEliminar.setEnabled(false);
+        //btnEliminar.setEnabled(false);
 
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -226,7 +229,7 @@ boolean abrirFormuario=true;
         System.out.println("tecla presionada:  "+evt.getKeyChar());
         char a = evt.getKeyChar();
         boolean valido = false;
-          if(txtNumero.getText().length() ==0 )
+          if(txtNumero.getText().length() ==0  )
     {
         if (a == '-' ||  a == '0' ) {
             JOptionPane.showMessageDialog(null, "Tiene que ingresar numeros positivos mayores a cero (0).");

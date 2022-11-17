@@ -46,10 +46,8 @@ Internacion in;
         h = new Habitacion();
         in = new Internacion();
         controladorInternacion.llenarTablaInternacion(tablaInternacion);
-        
         habitaciones = controlador.llenarComboHabitacion();
         ubicaciones = controlador.llenarComboUbicacion();
-        
         camas = controladorInternacion.llenarComboCama();
         
         
@@ -64,8 +62,11 @@ Internacion in;
             }
         
         for (int i = 0; i < camas.size(); i++) {
-            
-                    cbCama.addItem( camas.get(i).getNumero()+" - "+camas.get(i).getEstado() +" - " + ubicaciones.get(i).getHospital()+" - "+ ubicaciones.get(i).getNombreSala()+ " - "+habitaciones.get(i).getNumero());
+            h=camas.get(i).getHabitacion();
+            u=h.getUbicacion();
+            System.out.println("add; " + camas.get(i).getNumero()+" - "+camas.get(i).getEstado()+" - " + u.getHospital()+" - " + u.getNombreSala()+ " - "+h.getNumero());
+            cbCama.addItem( camas.get(i).getNumero()+" - "+camas.get(i).getEstado()+" - " + u.getHospital()+" - " + u.getNombreSala()+ " - "+h.getNumero());
+          //cbCama.addItem( camas.get(i).getNumero()+" - "+camas.get(i).getEstado() +" - " + ubicaciones.get(i).getHospital()+" - "+ ubicaciones.get(i).getNombreSala()+ " - "+habitaciones.get(i).getNumero());
         
         
     }}
@@ -252,7 +253,7 @@ Internacion in;
         cama.setIdCama(idCama);
  
         SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
-    String fechaActual = fecha.format(fechaInternacion.getDate());
+        String fechaActual = fecha.format(fechaInternacion.getDate());
         internacion.setFecha(fechaActual);
         
         if(txtDiagnostico.getText().length()==0){

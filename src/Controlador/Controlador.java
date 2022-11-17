@@ -115,7 +115,9 @@ public void eliminarUbicacion(Modelo.Ubicacion ubicacion,JTable tabla){
                 llenarTablaUbicacion(tabla);
                 JOptionPane.showMessageDialog(null, "Exito al borrar");
             }catch(SQLException e){
-            System.out.println(e);
+                JOptionPane.showMessageDialog(null, "Primero tiene q borrar las habitaciones relacionadas a la ubicacion seleccionada para poder borrarla");
+
+            //System.out.println(e);
             }            
    }
 
@@ -236,7 +238,9 @@ public void eliminarHabitacion(Habitacion habitacion,JTable tabla){
                 llenarTablaHabitacion(tabla);
                 JOptionPane.showMessageDialog(null, "Exito al borrar");
             }catch(SQLException e){
-            System.out.println(e);
+                JOptionPane.showMessageDialog(null, "Primero tiene q borrar las camas relacionadas a la habitacion seleccionada para poder borrarla");
+
+            //System.out.println(e);
             }            
    }
 
@@ -353,22 +357,22 @@ public void insertarCama(Cama cama, Habitacion habitacion,JTable tabla){
         
         
         try {
-            int cantidad_de_regsitros = 0;
-             String consulta = "SELECT \"Cama\".\"numero\"\n" +
-                "  FROM \"Cama\"\n" +
-                "  WHERE  \"Cama\".\"numero\" = ?\n"+
-                "  AND  \"Cama\".\"idHabitacion\" = ? ;";
-                   pst = conexion.prepareStatement(consulta);
-                   pst.setInt(1, cama.getNumero());
-                   pst.setObject(2, habitacion.getIdHabitacion());
-                   rs = pst.executeQuery();
-                   rsm = rs.getMetaData();
-                   while (rs.next()) { 
-                     cantidad_de_regsitros++;
-                   }
-       if(cantidad_de_regsitros>0){
-            JOptionPane.showMessageDialog(null, "No puede repetirse el numero de cama en una misma habitacion");
-       }else{
+//            int cantidad_de_regsitros = 0;
+//             String consulta = "SELECT \"Cama\".\"numero\"\n" +
+//                "  FROM \"Cama\"\n" +
+//                "  WHERE  \"Cama\".\"numero\" = ?\n"+
+//                "  AND  \"Cama\".\"idHabitacion\" = ? ;";
+//                   pst = conexion.prepareStatement(consulta);
+//                   pst.setInt(1, cama.getNumero());
+//                   pst.setObject(2, habitacion.getIdHabitacion());
+//                   rs = pst.executeQuery();
+//                   rsm = rs.getMetaData();
+//                   while (rs.next()) { 
+//                     cantidad_de_regsitros++;
+//                   }
+//       if(cantidad_de_regsitros>0){
+//            JOptionPane.showMessageDialog(null, "No puede repetirse el numero de cama en una misma habitacion");
+//       }else{
            String cadena = "INSERT INTO \"Cama\"(\n" +
 "            numero, estado, \"idHabitacion\")\n" +
 "    VALUES (?, ?, ?);"; 
@@ -379,7 +383,7 @@ public void insertarCama(Cama cama, Habitacion habitacion,JTable tabla){
         pst.execute(); 
         JOptionPane.showMessageDialog(null, "Se inserto correctamente");
         llenarTablaCama(tabla);
-       }
+//       }
        
        
        
@@ -407,7 +411,8 @@ public void eliminarCama(Cama cama,JTable tabla){
                 llenarTablaCama(tabla);
                 
             }catch(SQLException e){
-            System.out.println(e);
+                JOptionPane.showMessageDialog(null, "Primero tiene q borrar las internaciones relacionadas a la cama seleccionada para poder borrarla");
+            //System.out.println(e);
             }            
    }
 

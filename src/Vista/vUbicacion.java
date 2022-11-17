@@ -185,7 +185,7 @@ if(txtHospital.getText().length() <=3 && txtNombre.getText().length() <=3)
         controlador.eliminarUbicacion(ubicacion, tablaUbicacion);
         
         limpiarCampos();
-        btnEliminar.setEnabled(false);
+        //btnEliminar.setEnabled(false);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtHospitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHospitalActionPerformed

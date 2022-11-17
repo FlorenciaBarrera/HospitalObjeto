@@ -23,21 +23,26 @@ Controlador controlador;
 ArrayList<Ubicacion> ubicaciones;
 ArrayList<Habitacion> habitaciones;
 ArrayList<Cama> camas;
-    
+Ubicacion u;
+Habitacion h;
     public vCama() throws SQLException {
          initComponents();
         controlador = new Controlador();
         ubicaciones = new ArrayList<Ubicacion>();
         habitaciones = new ArrayList<Habitacion>();
         camas = new ArrayList<Cama>();
-//        
+        u = new Ubicacion();
+        h = new Habitacion();
         controlador.llenarTablaCama(tablaCama);
-//        
         habitaciones = controlador.llenarComboHabitacion();
         ubicaciones = controlador.llenarComboUbicacion();
+
+         
         for (int i = 0; i < habitaciones.size(); i++) {
-            System.out.println("add; " + habitaciones.get(i).getNumero()+" " + ubicaciones.get(i).getHospital()+" "+ubicaciones.get(i).getNombreSala());
-            cbHabitacion.addItem(habitaciones.get(i).getNumero()+" " + ubicaciones.get(i).getHospital()+" "+ubicaciones.get(i).getNombreSala());
+            u=habitaciones.get(i).getUbicacion();
+            //System.out.println("add; " + habitaciones.get(i).getNumero()+" " + ubicaciones.get(i).getHospital()+" "+ubicaciones.get(i).getNombreSala());
+            System.out.println("add; " + habitaciones.get(i).getNumero()+" " + u.getHospital()+" "+u.getNombreSala());
+            cbHabitacion.addItem(habitaciones.get(i).getNumero()+" " + u.getHospital()+" "+u.getNombreSala());
         }
         
     }
@@ -200,32 +205,36 @@ ArrayList<Cama> camas;
         Ubicacion ubicacion = new Ubicacion();
         
         
-        cama.setNumero(Integer.parseInt(txtNumero.getText()));
-        
-        
-        int idUbicacion = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getIdUbicacion();
-        String hospital = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getHospital();
-        String nombreSala = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getNombreSala();
+//        int idUbicacion = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getIdUbicacion();
+//        String hospital = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getHospital();
+//        String nombreSala = ubicaciones.get(cbHabitacion.getSelectedIndex()-1).getNombreSala();
+//        Ubicacion.setIdUbicacion(idUbicacion);
+//        ubicacion.setHospital(hospital);
+//        ubicacion.setNombreSala(nombreSala);
+//        JOptionPane.showMessageDialog(null, "hospital:"+hospital);
+//        JOptionPane.showMessageDialog(null, "nombre sala:"+nombreSala);
         
         int idHabitacion = habitaciones.get(cbHabitacion.getSelectedIndex()-1).getIdHabitacion();
         int numero = habitaciones.get(cbHabitacion.getSelectedIndex()-1).getNumero();
-
-        
-        ubicacion.setIdUbicacion(idUbicacion);
-        ubicacion.setHospital(hospital);
-        ubicacion.setNombreSala(nombreSala);
-      
         habitacion.setIdHabitacion(idHabitacion);
         habitacion.setNumero(numero);
-        habitacion.setUbicacion(ubicacion);
-        
+        //habitacion.setUbicacion(ubicacion);
+//        JOptionPane.showMessageDialog(null, "habitacion seleccionada:"+idHabitacion);
+//        JOptionPane.showMessageDialog(null, "numero de habitacion:"+numero);
+
+        cama.setNumero(Integer.parseInt(txtNumero.getText()));
+        cama.setEstado(cbEstado.getSelectedItem().toString());
         cama.setHabitacion(habitacion);
-        
+                       
+        if(Integer.parseInt(txtNumero.getText())<=0){
+        JOptionPane.showMessageDialog(null, "El numero de cama no puede ser igual o menos a cero");
+        }else{
         if (cbEstado.getSelectedIndex()!=0){
-            cama.setEstado(cbEstado.getSelectedItem().toString());
+            
             controlador.insertarCama(cama, habitacion, tablaCama);}
             else {
             JOptionPane.showMessageDialog(null, "Seleccione Estado Cama");
+        }
         }
         
         //controlador.insertarCama(cama, habitacion, tablaCama);

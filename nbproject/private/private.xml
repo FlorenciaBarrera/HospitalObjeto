@@ -4,7 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Vista/vInternacion.java</file>
-            <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Modelo/Bd.java</file>
+            <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Modelo/Habitacion.java</file>
+            <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Modelo/Ubicacion.java</file>
+            <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Controlador/ControladorInternacion.java</file>
+            <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Controlador/Controlador.java</file>
+            <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Modelo/Cama.java</file>
+            <file>file:/D:/TRABAJO%20FINAL/HospitalObjeto/src/Vista/vCama.java</file>
         </group>
     </open-files>
 </project-private>

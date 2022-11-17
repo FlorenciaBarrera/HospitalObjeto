@@ -171,7 +171,7 @@ public void eliminarInternacion(Internacion internacion,JTable tabla){
                 
                 llenarTablaInternacion(tabla);
             }catch(SQLException e){
-            System.out.println(e);
+            //System.out.println(e);
             }            
    }    
 
@@ -254,7 +254,7 @@ public void insertarInternacion(Internacion internacion, Cama cama,JTable tabla)
         
         } catch (SQLException | HeadlessException e) {
             
-            System.out.println("Error. No se pudo registrar"+e);
+            //System.out.println("Error. No se pudo registrar"+e);
         }
        
       
